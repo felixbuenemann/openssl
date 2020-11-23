@@ -72,6 +72,7 @@ uplink-x86.s:	$(TOP)/ms/uplink-x86.pl
 	$(PERL) $(TOP)/ms/uplink-x86.pl $(PERLASM_SCHEME) > $@
 
 x86_64cpuid.s: x86_64cpuid.pl;	$(PERL) x86_64cpuid.pl $(PERLASM_SCHEME) > $@
+arm64cpuid.S: arm64cpuid.pl;	$(PERL) arm64cpuid.pl $(PERLASM_SCHEME) > $@
 ia64cpuid.s: ia64cpuid.S;	$(CC) $(CFLAGS) -E ia64cpuid.S > $@
 ppccpuid.s:	ppccpuid.pl;	$(PERL) ppccpuid.pl $(PERLASM_SCHEME) $@
 pariscid.s:	pariscid.pl;	$(PERL) pariscid.pl $(PERLASM_SCHEME) $@

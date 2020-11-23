@@ -1028,6 +1028,16 @@ void *OPENSSL_stderr(void)
     return stderr;
 }
 
+#if !defined(OPENSSL_CPUID_OBJ)
+/*
+ * The volatile is used to to ensure that the compiler generates code that reads
+ * all values from the array and doesn't try to optimize this away. The standard
+ * doesn't actually require this behavior if the original data pointed to is
+ * not volatile, but compilers do this in practice anyway.
+ *
+ * There are also assembler versions of this function.
+ */
+# undef CRYPTO_memcmp
 int CRYPTO_memcmp(const volatile void *in_a, const volatile void *in_b, size_t len)
 {
     size_t i;
@@ -1040,3 +1050,22 @@ int CRYPTO_memcmp(const volatile void *in_a, const volatile void *in_b, size_t l
 
     return x;
 }
+
+/*
+ * For systems that don't provide an instruction counter register or equivalent.
+ */
+uint32_t OPENSSL_rdtsc(void)
+{
+    return 0;
+}
+
+size_t OPENSSL_instrument_bus(unsigned int *out, size_t cnt)
+{
+    return 0;
+}
+
+size_t OPENSSL_instrument_bus2(unsigned int *out, size_t cnt, size_t max)
+{
+    return 0;
+}
+#endif
